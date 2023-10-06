@@ -34,11 +34,23 @@ export class MetaService {
   updateMetaTags(metaTags: MetaTags) {
     const { title, type, imageSrc, url, description, cardType } = metaTags;
 
-    this.setTitle(title);
-    this.setType(type);
-    this.setImage(imageSrc);
-    this.setUrl(url);
-    this.setDescription(description);
-    this.setCardType(cardType);
+    if (title) {
+      this.setTitle(title);
+    }
+    if (type) {
+      this.setType(type);
+    }
+    if (imageSrc) {
+      this.setImage(imageSrc);
+    }
+    if (url) {
+      this.setUrl(url);
+    }
+    if (description) {
+      this.setDescription(description);
+    }
+    if (cardType) {
+      this.setCardType(cardType);
+    }
   }
 }

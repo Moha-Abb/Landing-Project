@@ -27,11 +27,11 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.metaService.updateMetaTags({
-      title: 'IT, engineering and BPO solutions and services – Sii Poland',
+      title: 'Titulo del project y test',
       type: 'website',
-      imageSrc: '<https://sii.pl/wp-content/uploads/2020/06/main_page_top_optimized.jpg.webp>',
-      url: '<https://www.google.com>',
-      description: 'With over 7 500 Power People, Sii is the top IT services vendor in Poland.',
+      imageSrc: '<https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSm0cFem_Bw0uo3QZSLGxC7wO6gSzjdFc0bA&usqp=CAU>',
+      url: '<https://projectlanding.vercel.app/main>',
+      description: 'pequeña descripcion',
       cardType: 'summary_large_image',
     });
     const temporaryDataString = localStorage.getItem('temporaryData');
@@ -94,8 +94,8 @@ export class WelcomeComponent implements OnInit {
       await navigator.share({
         title: title,
         text: description,
-        url: 'https://www.google.com/',
-        files: [new File([blob], 'image.png', { type: 'image/png' })]
+        url: 'https://landing-project-vercel.vercel.app/',
+        // files: [new File([blob], 'image.png', { type: 'image/png' })]
 
       });
       console.log('Contenido compartido con éxito.');

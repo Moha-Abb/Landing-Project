@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { envSupa } from 'src/app/environments/supa';
-import IntentoData from '../inerfaces/intent-data';
 @Injectable({
   providedIn: 'root'
 })
