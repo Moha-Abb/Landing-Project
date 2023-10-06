@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   public name: string;
   public phone: string;
   loggedIn: boolean
+  showSpinner: boolean = false;
 
   constructor(private supaService: SupaService) {
     this.email = '';
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
 
 
   async sendMagicLink() {
+    this.showSpinner = true;
     const { data, error } = await this.supaService.signInWithEmail(this.email, this.phone);
     if (error) {
       console.error('Error al iniciar sesión:', error);
@@ -38,8 +40,9 @@ export class LoginComponent implements OnInit {
 
       this.loggedIn = true
     }
-  }
+    this.showSpinner = false;
 
+  }
 
 }
 

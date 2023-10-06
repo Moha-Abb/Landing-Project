@@ -35,7 +35,13 @@
       />
     </div>
     <button class="btn btn-primary" (click)="sendMagicLink()">
-      Enviar Enlace Mágico
+      <span
+        *ngIf="showSpinner"
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      <span *ngIf="!showSpinner">Enviar Enlace Mágico</span>
     </button>
   </div>
   <div class="mt-4">
