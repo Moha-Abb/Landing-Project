@@ -17,7 +17,7 @@ export class SupaService {
         email,
         phone,
         options: {
-          emailRedirectTo: 'http://localhost:4200/welcome',
+          emailRedirectTo: 'https://landing-project-vercel.vercel.app/welcome',
         },
       });
 
