@@ -1,0 +1,46 @@
+<div id="quiz" class="section">
+  <div class="section-center">
+    <div class="container">
+      <app-quiz
+        #quiz
+        [style.display]="showQuizScreen ? 'block' : 'none'"
+        (finalResult)="finalResult($event)"
+      ></app-quiz>
+
+      <app-login
+        #login
+        [style.display]="showLoginScreen ? 'block' : 'none'"
+      ></app-login>
+
+      <div
+        [style.display]="showMainMenu ? 'block' : 'none'"
+        class="row justify-content-md-center"
+      >
+        <div class="col-md-6 mx-auto">
+          <div class="quiz-form">
+            <div class="row">
+              <div class="col-md-12">
+                Empieza el siguiente test para discubrir tu futura situacion
+                financiera
+              </div>
+            </div>
+
+            <div class="form-btn">
+              <button class="submit-btn" (click)="quizQuestions()">
+                Empezar Test
+              </button>
+              <button disabled type="button" class="submit-btn d-none">
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Loading...
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

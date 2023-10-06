@@ -1,0 +1,52 @@
+<div class="container mt-5">
+  <div class="d-flex flex-column align-items-center">
+    <h1 class="mb-3">Hola {{ name }}, este es el resultado de tu test</h1>
+
+    <h2 class="mb-4">
+      Dale a descargar y te llegará tu resultado con más detalle en el correo.
+    </h2>
+
+    <button class="btn btn-primary mb-4">Descargar</button>
+
+    <div class="d-flex flex-column align-items-center">
+      <label class="mb-2">Salir de la sesión</label>
+      <button class="btn btn-danger" (click)="signOut()">
+        Salir de sesión
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4 d-flex justify-content-center">
+  <button class="btn btn-info mx-2" (click)="shareContent()">Compartir</button>
+
+  <button class="btn btn-primary mx-2">
+    <a
+      href="https://twitter.com/share?url=http://localhost:4200/welcome/"
+      target="_blank"
+      class="text-white text-decoration-none"
+    >
+      Compartir en Twitter
+    </a>
+  </button>
+
+  <button class="btn btn-primary mx-2">
+    <a
+      target="_blank"
+      href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4200/welcome/&amp;src=sdkpreparse"
+      class="text-white text-decoration-none"
+    >
+      Facebook
+    </a>
+  </button>
+
+  <button class="btn btn-success mx-2">
+    <a
+      href="https://api.whatsapp.com/send?text=Título_de_tu_contenido%20http://localhost:4200/welcome"
+      target="_blank"
+      class="text-white text-decoration-none"
+    >
+      Compartir en WhatsApp
+    </a>
+  </button>
+</div>
