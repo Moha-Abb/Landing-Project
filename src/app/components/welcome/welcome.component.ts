@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SupaService } from '../../services/supa.service';
 import { Router } from '@angular/router';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { QuizService } from 'src/app/services/quiz.service';
 import { MetaService } from '../../services/meta.service';
-
+import { AllowGuardService } from 'src/app/services/allow-guard.service';
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -21,7 +20,8 @@ export class WelcomeComponent implements OnInit {
   private respuestasGuardadas: boolean = false;
 
   constructor(private supaService: SupaService, private route: Router,
-    private quizService: QuizService, private metaService: MetaService) {
+    private metaService: MetaService,
+    private allowGuardService: AllowGuardService) {
 
   }
 
@@ -53,6 +53,7 @@ export class WelcomeComponent implements OnInit {
   async checkAuthentication() {
     const dataUser = await this.supaService.getCurrentUser();
     if (dataUser.data.user?.aud == "authenticated") {
+      this.allowGuardService.setAuthenticated(true);
       if (!dataUser.data.user.user_metadata || Object.keys(dataUser.data.user.user_metadata).length === 0) {
         await this.supaService.updateUserInfo(dataUser.data.user.id, this.name, this.phone);
         console.log('hey')
