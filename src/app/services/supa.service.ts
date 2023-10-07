@@ -10,13 +10,13 @@ export class SupaService {
 
   constructor() { }
 
-  async signInWithEmail(email: string, phone: string) {
+  async signInWithEmail(email: string, phone: string): Promise<any> {
     try {
       const { data, error } = await this.supabase.auth.signInWithOtp({
         email,
         phone,
         options: {
-          emailRedirectTo: 'https://landing-project-vercel.vercel.app/welcome',
+          emailRedirectTo: 'https://projectlpvercel.vercel.app/',
         },
       });
 
@@ -106,7 +106,7 @@ export class SupaService {
     }
   }
 
-  getCurrentUser() {
-    return this.supabase.auth.getUser();
+  async getCurrentUser(): Promise<any> {
+    return await this.supabase.auth.getUser();
   }
 }

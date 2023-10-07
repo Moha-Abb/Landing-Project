@@ -51,23 +51,35 @@ export class WelcomeComponent implements OnInit {
 
 
   async checkAuthentication() {
-    const dataUser = await this.supaService.getCurrentUser();
-    if (dataUser.data.user?.aud == "authenticated") {
-      this.allowGuardService.setAuthenticated(true);
-      if (!dataUser.data.user.user_metadata || Object.keys(dataUser.data.user.user_metadata).length === 0) {
-        await this.supaService.updateUserInfo(dataUser.data.user.id, this.name, this.phone);
-        console.log('hey')
-      }
+    try {
+      const dataUser = await this.supaService.getCurrentUser();
 
-      if (!this.respuestasGuardadas) {
-        await this.supaService.saveUserResponses(dataUser.data.user.id, this.responsesTest);
-        this.respuestasGuardadas = true;
+      console.log('1')
+      if (dataUser.data.user?.aud == "authenticated") {
+        console.log('2')
+        this.allowGuardService.setAuthenticated(true);
+        if (!dataUser.data.user.user_metadata || Object.keys(dataUser.data.user.user_metadata).length === 0) {
+          await this.supaService.updateUserInfo(dataUser.data.user.id, this.name, this.phone);
+          console.log('hey')
+        }
+
+        if (!this.respuestasGuardadas) {
+          await this.supaService.saveUserResponses(dataUser.data.user.id, this.responsesTest);
+          this.respuestasGuardadas = true;
+        }
+        console.log(dataUser)
+        return { error: null };
+      } else {
+        this.allowGuardService.setAuthenticated(false);
+        this.route.navigate(['/main']);
+        return false
       }
-      console.log(dataUser)
-      return { error: null };
-    } else {
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      this.allowGuardService.setAuthenticated(false);
       return false
     }
+
   }
 
   async signOut() {
