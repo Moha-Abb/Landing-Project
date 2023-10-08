@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { QuizComponent } from '../quiz/quiz.component';
 import { LoginComponent } from '../login/login.component';
+import { SupaService } from '../../services/supa.service';
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -19,11 +21,12 @@ export class MainComponent {
     this.showMainMenu = true;
     this.showQuizScreen = false;
     this.showLoginScreen = false;
-    localStorage.removeItem('responsesTest');
-    localStorage.removeItem('temporaryData');
+
   }
 
   quizQuestions(): void {
+    localStorage.removeItem('responsesTest')
+
     this.showQuizScreen = true;
     this.showMainMenu = false;
   }
@@ -35,4 +38,6 @@ export class MainComponent {
     this.showLoginScreen = true;
 
   }
+
+
 }

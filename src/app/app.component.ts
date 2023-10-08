@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
       title: 'Titulo del project y test',
       type: 'website',
       imageSrc: '<https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSm0cFem_Bw0uo3QZSLGxC7wO6gSzjdFc0bA&usqp=CAU>',
-      url: '<https://projectlanding.vercel.app/main>',
+      url: '<https://lpprojectpro.vercel.app/>',
       description: 'pequeña descripcion',
       cardType: 'summary_large_image',
     });

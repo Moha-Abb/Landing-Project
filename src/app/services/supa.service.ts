@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { envSupa } from 'src/app/environments/supa';
 @Injectable({
@@ -16,7 +16,7 @@ export class SupaService {
         email,
         phone,
         options: {
-          emailRedirectTo: 'http://localhost:4200/welcome',
+          emailRedirectTo: 'https://lpprojectpro.vercel.app/welcome',
         },
       });
 

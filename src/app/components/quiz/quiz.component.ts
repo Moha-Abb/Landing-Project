@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { QuizService } from 'src/app/services/quiz.service';
+
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
@@ -11,28 +10,31 @@ export class QuizComponent {
   @Output() finalResult = new EventEmitter()
   @Output() responses = new EventEmitter()
 
-  question1Answer: any;
-  question2Answer: any;
-  responsesTest: [any, any] | undefined
+  questions: string[] = ['Pregunta 1', 'Pregunta 2', 'Pregunta 3', 'Pregunta 4'];
+  currentQuestionIndex: number = 0;
+  currentAnswer: string = '';
+  responsesTest: string[] = [];
 
-  constructor(private router: Router, private quizService: QuizService) { }
+  constructor() {
 
-  saveAnswers(): void {
+  }
+
+  nextQuestion(): void {
+    if (this.currentAnswer) {
+      this.responsesTest.push(this.currentAnswer);
+      this.currentAnswer = '';
+
+      if (this.currentQuestionIndex < this.questions.length - 1) {
+        this.currentQuestionIndex++;
+      } else {
 
 
-    if (this.question1Answer && this.question2Answer) {
-      this.responsesTest = [
-        this.question1Answer,
-        this.question2Answer]
-        ;
-      console.log('Saving Answers:', this.responsesTest);
-      localStorage.setItem('responsesTest', JSON.stringify(this.responsesTest));
-      this.finalResult.emit(true)
+        localStorage.setItem('responsesTest', JSON.stringify(this.responsesTest));
+        this.finalResult.emit(true)
 
-      /*       this.router.navigate(['/login'])
-       */
+      }
     } else {
-      alert('Por favor, responde ambas preguntas.');
+      alert('Por favor, responde la pregunta antes de pasar a la siguiente.');
     }
   }
 }

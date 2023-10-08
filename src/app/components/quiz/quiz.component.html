@@ -1,137 +1,21 @@
-<!-- <div class="row justify-content-md-center backrou">
-  <div class="col-md-9 mx-auto">
-    <div class="quiz-form">
-      <div class="row">
-        <div class="col-md-12" *ngIf="selectedQuestion.question">
-          <div class="form-group">
-            <h1>Quiz</h1>
-            <hr />
-            <p>
-              <b>{{ index + 1 }}. </b> {{ selectedQuestion.question }}
-            </p>
-            <div *ngIf="selectedQuestion.answers.answer_a">
-              <input
-                id="answer_a"
-                type="radio"
-                class="btn-check"
-                name="answer"
-                autocomplete="off"
-                value="answer_a_correct"
-                [(ngModel)]="answer"
-              />
-              <label class="btn btn-outline-success" for="answer_a">
-                {{ selectedQuestion.answers.answer_a }}</label
-              >
-              <br /><br />
-            </div>
-            <div *ngIf="selectedQuestion.answers.answer_b">
-              <input
-                id="answer_b"
-                type="radio"
-                class="btn-check"
-                name="answer"
-                autocomplete="off"
-                value="answer_b_correct"
-                [(ngModel)]="answer"
-              />
-              <label class="btn btn-outline-success" for="answer_b">
-                {{ selectedQuestion.answers.answer_b }}</label
-              >
-              <br /><br />
-            </div>
-            <div *ngIf="selectedQuestion.answers.answer_c">
-              <input
-                id="answer_c"
-                type="radio"
-                class="btn-check"
-                name="answer"
-                autocomplete="off"
-                value="answer_c_correct"
-                [(ngModel)]="answer"
-              />
-              <label class="btn btn-outline-success" for="answer_c">
-                {{ selectedQuestion.answers.answer_c }}</label
-              >
-              <br /><br />
-            </div>
-            <div *ngIf="selectedQuestion.answers.answer_d">
-              <input
-                id="answer_d"
-                type="radio"
-                class="btn-check"
-                name="answer"
-                autocomplete="off"
-                value="answer_d_correct"
-                [(ngModel)]="answer"
-              />
-              <label class="btn btn-outline-success" for="answer_d">
-                {{ selectedQuestion.answers.answer_d }}</label
-              >
-              <br /><br />
-            </div>
-
-            <div *ngIf="selectedQuestion.answers.answer_e">
-              <input
-                id="answer_e"
-                type="radio"
-                class="btn-check"
-                name="answer"
-                autocomplete="off"
-                value="answer_e_correct"
-                [(ngModel)]="answer"
-              />
-              <label class="btn btn-outline-success" for="answer_e">
-                {{ selectedQuestion.answers.answer_e }}</label
-              >
-              <br /><br />
-            </div>
-            <div *ngIf="selectedQuestion.answers.answer_f">
-              <input
-                id="answer_f"
-                type="radio"
-                class="btn-check"
-                name="answer"
-                autocomplete="off"
-                value="answer_f_correct"
-                [(ngModel)]="answer"
-              />
-              <label class="btn btn-outline-success" for="answer_f">
-                {{ selectedQuestion.answers.answer_f }}</label
-              >
-              <br /><br />
-            </div>
-          </div>
-          <div class="form-btn">
-            <button class="submit-btn" (click)="nextQuestion()">
-              {{ questions.length == index + 1 ? "Terminar" : "Siguiente" }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <div class="container mt-4">
-  <div class="mb-3">
-    <label for="question1" class="form-label">Pregunta 1:</label>
-    <input
-      type="text"
-      id="question1"
-      class="form-control"
-      [(ngModel)]="question1Answer"
-    />
+  <div class="progress-container">
+    <div
+      class="progress-bar"
+      [style.width]="(currentQuestionIndex + 1) * 25 + '%'"
+    ></div>
   </div>
-  <div class="mb-3">
-    <label for="question2" class="form-label">Pregunta 2:</label>
-    <input
-      type="text"
-      id="question2"
-      class="form-control"
-      [(ngModel)]="question2Answer"
-    />
+  <div class="progress-text">{{ currentQuestionIndex + 1 }} / 4</div>
+
+  <div
+    *ngIf="currentQuestionIndex < questions.length"
+    class="question-container"
+  >
+    <label class="form-label">{{ questions[currentQuestionIndex] }}</label>
+    <input type="text" class="form-control" [(ngModel)]="currentAnswer" />
   </div>
-  <button class="btn btn-primary" (click)="saveAnswers()">
-    Guardar Respuestas
+
+  <button class="btn btn-primary mt-3" (click)="nextQuestion()">
+    Siguiente
   </button>
 </div>
