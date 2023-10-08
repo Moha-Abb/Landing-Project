@@ -57,8 +57,9 @@ export class WelcomeComponent implements OnInit {
           await this.supaService.updateUserInfo(dataUser.data.user.id, this.name, this.phone);
         }
 
-        if (!this.respuestasGuardadas) {
+        if (this.responsesTest) {
           await this.supaService.saveUserResponses(dataUser.data.user.id, this.responsesTest);
+          localStorage.removeItem('responsesTest')
           this.respuestasGuardadas = true;
         }
         return { error: null };
