@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SupaService } from '../../services/supa.service';
 import { Router } from '@angular/router';
-import { QuizService } from 'src/app/services/quiz.service';
+import { HttpClient } from '@angular/common/http';
 import { MetaService } from '../../services/meta.service';
 import { AllowGuardService } from 'src/app/services/allow-guard.service';
 @Component({
@@ -16,12 +16,14 @@ export class WelcomeComponent implements OnInit {
   phone: any;
   result: any;
   responsesTest: any
+  isDownloading: boolean = false;
 
   private respuestasGuardadas: boolean = false;
 
   constructor(private supaService: SupaService, private route: Router,
     private metaService: MetaService,
-    private allowGuardService: AllowGuardService) {
+    private allowGuardService: AllowGuardService,
+    private http: HttpClient) {
 
   }
 
@@ -116,4 +118,23 @@ export class WelcomeComponent implements OnInit {
       console.error('Error al compartir contenido:', error);
     }
   }
+
+  descargar() {
+    this.isDownloading = true;
+    const destinatario = 'rimata3939@fesgrid.com'; // Coloca la dirección de correo de Mailtrap
+    const respuestas = this.responsesTest; // Suponiendo que responsesTest contiene las respuestas del usuario
+
+    this.http.post('http://localhost:3000/enviar-correo', { destinatario, respuestas: this.responsesTest }).subscribe(
+      () => {
+        console.log('Correo enviado con éxito');
+        this.isDownloading = false;
+      },
+      (Error) => {
+        console.error('Error al enviar el correo:', Error);
+        this.isDownloading = false;
+
+      }
+    );
+  }
 }
+

@@ -6,10 +6,21 @@
       Dale a descargar y te llegará tu resultado con más detalle en el correo.
     </h2>
 
-    <button class="btn btn-primary mb-4">Descargar</button>
+    <button
+      class="btn btn-primary mb-4"
+      (click)="descargar()"
+      [disabled]="isDownloading"
+    >
+      <span
+        *ngIf="isDownloading"
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      <span *ngIf="!isDownloading">Descargar</span>
+    </button>
 
     <div class="d-flex flex-column align-items-center">
-      <label class="mb-2">Salir de la sesión</label>
       <button class="btn btn-danger btn-logout" (click)="signOut()">
         Salir de sesión
       </button>
