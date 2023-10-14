@@ -46,7 +46,7 @@
 
   <button class="btn btn-primary mx-2">
     <a
-      href="https://twitter.com/share?url=https://lpprojectpro.vercel.app/results"
+      [href]="getTwitterLink()"
       target="_blank"
       class="text-white text-decoration-none"
     >
@@ -56,8 +56,8 @@
 
   <button class="btn btn-primary mx-2">
     <a
+      [href]="getFacebookLink()"
       target="_blank"
-      href="https://www.facebook.com/sharer/sharer.php?u=https://lpprojectpro.vercel.app/results&amp;src=sdkpreparse"
       class="text-white text-decoration-none"
     >
       Facebook
@@ -66,7 +66,7 @@
 
   <button class="btn btn-success mx-2">
     <a
-      href="https://api.whatsapp.com/send?text=Calculadora financiera%20https://lpprojectpro.vercel.app/results"
+      [href]="getWhatsAppLink()"
       target="_blank"
       class="text-white text-decoration-none"
     >

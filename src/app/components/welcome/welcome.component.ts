@@ -19,26 +19,22 @@ export class WelcomeComponent implements OnInit {
   result: any;
   dataUser: any
   responsesTest: any
+  userIdLink: any;
   isDownloading: boolean = false;
 
-  private respuestasGuardadas: boolean = false;
   @ViewChild('resultCanvas', { static: false }) resultCanvas: ElementRef | undefined;
   imageGeneratedUrl!: string;
 
   constructor(private supaService: SupaService, private route: Router,
     private http: HttpClient, private meta: Meta) {
 
+    this.getTwitterLink()
+    this.getFacebookLink()
+    this.getWhatsAppLink()
   }
 
   ngOnInit(): void {
-    /* this.metaService.updateMetaTags({
-      title: 'Titulo del project y test',
-      type: 'website',
-      imageSrc: '<https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSm0cFem_Bw0uo3QZSLGxC7wO6gSzjdFc0bA&usqp=CAU>',
-      url: '<https://projectlanding.vercel.app/main>',
-      description: 'pequeña descripcion',
-      cardType: 'summary_large_image',
-    }); */
+
     const temporaryDataString = localStorage.getItem('temporaryData');
     if (temporaryDataString) {
       const temporaryData = JSON.parse(temporaryDataString);
@@ -51,22 +47,35 @@ export class WelcomeComponent implements OnInit {
       this.responsesTest = JSON.parse(responsesTestString);
     }
     this.checkAuthentication();
+
+
+  }
+  getTwitterLink(): string {
+    return `https://twitter.com/share?url=https://lpprojectpro.vercel.app/results/${this.userIdLink}`;
   }
 
+  getFacebookLink(): string {
+    return `https://www.facebook.com/sharer/sharer.php?u=https://lpprojectpro.vercel.app/results/${this.userIdLink}&src=sdkpreparse`;
+  }
+
+  getWhatsAppLink(): string {
+    return `https://api.whatsapp.com/send?text=Calculadora financiera%20https://lpprojectpro.vercel.app/results/${this.userIdLink}`;
+  }
 
   async checkAuthentication() {
     try {
       this.dataUser = await this.supaService.getCurrentUser();
       this.email = this.dataUser.data.user.email;
+      this.name = this.dataUser.data.user.name;
       if (this.dataUser.data.user?.aud == "authenticated") {
         if (!this.dataUser.data.user.user_metadata || Object.keys(this.dataUser.data.user.user_metadata).length === 0) {
-          await this.supaService.updateUserInfo(this.name);
+          await this.supaService.updateUserInfoName(this.name);
         }
 
-        if (true) {
+        if (!this.responsesTest) {
           await this.supaService.saveUserResponses(this.dataUser.data.user.id, this.responsesTest);
           localStorage.removeItem('responsesTest')
-          this.respuestasGuardadas = true;
+
           const imageGenerated = await this.generateImage()
           await this.supaService.saveImageToStorage(this.dataUser.data.user.id, imageGenerated)
           this.imageGeneratedUrl = await this.supaService.getImageToStorageUrl(this.dataUser.data.user.id)
@@ -127,8 +136,8 @@ export class WelcomeComponent implements OnInit {
     if (!this.dataUser.data.user.email) {
       await this.supaService.updateUserInfoEmail(this.email);
     }
-    // Cambia la URL a la URL de tu función serverless en Supabase
-    this.http.post('/api/sendmail', { destinatario, respuestas: this.responsesTest })
+
+    this.http.post('/api/sendmail', { destinatario, respuestas: 'this.responsesTest' })
       .subscribe(
         () => {
           console.log('Correo enviado con éxito');
@@ -142,12 +151,11 @@ export class WelcomeComponent implements OnInit {
   }
 
   async generateImage(): Promise<Blob> {
-    // Deberías tener una referencia del elemento canvas en tu plantilla HTML
-    // Asume que tienes <canvas #resultCanvas></canvas> en welcome.component.html
+
     const canvas = this.resultCanvas?.nativeElement;
     const ctx = canvas.getContext('2d');
 
-    // Personaliza tu imagen:
+    // Personalizar la imagen:
     ctx.fillText(`Resultado: ${this.responsesTest}`, 50, 50);
 
     return new Promise((resolve, reject) => {

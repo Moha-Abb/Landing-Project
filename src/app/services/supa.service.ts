@@ -103,8 +103,21 @@ export class SupaService {
 
     return data?.[0]?.numerointento || 0;
   }
+  async getResponses(idUser: string): Promise<{ respuestas: any; }[] | null> {
+    const { data, error } = await this.supabase
+      .from('respuestas')
+      .select('respuestas')
+      .eq('iduser', idUser);
 
-  async updateUserInfo(name: string): Promise<any> {
+    if (error) {
+      console.error('Error al obtener el número de intentos del usuario:', error);
+
+    }
+
+    return data;
+  }
+
+  async updateUserInfoName(name: string): Promise<any> {
     const { data: user, error } = await this.supabase.auth.updateUser({ data: { name: name } });
 
     if (error) {
@@ -147,7 +160,7 @@ export class SupaService {
   async saveImageToStorage(userId: string, blob: Blob): Promise<string> {
     const file = new File([blob], `${userId}.png`, { type: 'image/png' });
 
-    const { data, error } = await this.supabase.storage.from('resultsfoto').upload(`results/${userId}2.png`, file);
+    const { data, error } = await this.supabase.storage.from('resultsfoto').upload(`results/${userId}.png`, file);
     console.log(data)
     console.log(error)
 

@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { QuizService } from './services/quiz.service';
 import { HttpClientModule } from '@angular/common/http';
 import { WelcomeComponent } from './components/welcome/welcome.component';
-import { ResultsComponent } from './components/results/results.component';
+import { ResultsComponent } from './components/results/ResultsComponent';
 
 @NgModule({
   declarations: [
