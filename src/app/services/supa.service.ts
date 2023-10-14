@@ -83,6 +83,7 @@ export class SupaService {
     await this.supabase.from('respuestas').upsert([
       {
         intento_id: intentoId,
+        iduser: userID,
         respuestas: responses,
       }
     ]);

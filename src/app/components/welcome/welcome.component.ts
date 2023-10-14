@@ -19,7 +19,7 @@ export class WelcomeComponent implements OnInit {
   result: any;
   dataUser: any
   responsesTest: any
-  userIdLink: any;
+  userIdLink = '';
   isDownloading: boolean = false;
 
   @ViewChild('resultCanvas', { static: false }) resultCanvas: ElementRef | undefined;
@@ -72,7 +72,7 @@ export class WelcomeComponent implements OnInit {
           await this.supaService.updateUserInfoName(this.name);
         }
 
-        if (!this.responsesTest) {
+        if (this.responsesTest) {
           await this.supaService.saveUserResponses(this.dataUser.data.user.id, this.responsesTest);
           localStorage.removeItem('responsesTest')
 
@@ -137,7 +137,7 @@ export class WelcomeComponent implements OnInit {
       await this.supaService.updateUserInfoEmail(this.email);
     }
 
-    this.http.post('/api/sendmail', { destinatario, respuestas: 'this.responsesTest' })
+    this.http.post('/api/sendmail', { destinatario, respuestas: this.responsesTest })
       .subscribe(
         () => {
           console.log('Correo enviado con éxito');

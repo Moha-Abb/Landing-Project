@@ -35,9 +35,9 @@ export class LoginComponent implements OnInit {
     localStorage.removeItem('temporaryData');
   }
 
-  resolved(captchaResponse: string) {
+  /* resolved(captchaResponse: string) {
     console.log(`Resolved captcha with response: ${captchaResponse}`);
-  }
+  } */
 
   async sendMagicLink() {
     this.showSpinner = true;

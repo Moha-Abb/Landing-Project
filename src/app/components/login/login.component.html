@@ -32,10 +32,10 @@
       ></span>
       <span *ngIf="!showSpinner">Enviar SMS</span>
     </button>
-    <re-captcha
+    <!--  <re-captcha
       (resolved)="resolved($event)"
       siteKey="6Le-054oAAAAAP0WFdTOtsNRHvcxYsKKnKom19CE"
-    ></re-captcha>
+    ></re-captcha> -->
   </div>
   <div *ngIf="loggedIn" class="mt-4">
     <h1 class="text-success">SMS enviado, introduce el código</h1>
