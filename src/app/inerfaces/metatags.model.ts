@@ -6,3 +6,4 @@ export interface MetaTags {
     description: string;
     cardType: string;
 }
+

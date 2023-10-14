@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { SupaService } from '../../services/supa.service'
-
+import { Router } from '@angular/router';
+/* import {
+  
+  RecaptchaVerifier,
+  
+} from 'firebase/auth'; */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,24 +16,33 @@ export class LoginComponent implements OnInit {
   email: string;
   public name: string;
   public phone: string;
+  public pin: string;
+  pinErrorMessage: string = '';
+
   loggedIn: boolean
   showSpinner: boolean = false;
+  verificationSpinner: boolean = false;
 
-  constructor(private supaService: SupaService) {
+  constructor(private supaService: SupaService, private router: Router) {
     this.email = '';
     this.name = '';
     this.phone = '';
+    this.pin = '';
+
     this.loggedIn = false;
   }
   ngOnInit(): void {
     localStorage.removeItem('temporaryData');
   }
 
-
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+  }
 
   async sendMagicLink() {
     this.showSpinner = true;
-    const { data, error } = await this.supaService.signInWithEmail(this.email, this.phone);
+    const { data, error } = await this.supaService.signInWithPhone(this.phone);
+
     if (error) {
       console.error('Error al iniciar sesión:', error);
 
@@ -44,5 +58,25 @@ export class LoginComponent implements OnInit {
 
   }
 
+  async verifyNumber() {
+
+    this.verificationSpinner = true;
+    this.pinErrorMessage = '';
+
+    const { data, error } = await this.supaService.verifyPhoneNumber(this.phone, this.pin);
+
+    if (error) {
+      console.error('Error al verificar el pin:', error);
+      this.pinErrorMessage = 'El pin introducido es erróneo.';
+    } else {
+      await this.supaService.updateUserInfo(this.name);
+
+      console.log('Pin verificado exitosamente:', data);
+      this.router.navigate(['https://lpprojectpro.vercel.app/welcome']);
+    }
+
+    this.verificationSpinner = false;
+  }
 }
+
 

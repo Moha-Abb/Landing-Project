@@ -2,17 +2,6 @@
   <h2 class="mt-5">Iniciar Sesión</h2>
   <div *ngIf="!loggedIn" class="mt-4">
     <div class="form-group">
-      <label for="email">Correo Electrónico:</label>
-      <input
-        type="email"
-        id="email"
-        [(ngModel)]="email"
-        class="form-control"
-        placeholder="Tu correo electrónico"
-        required
-      />
-    </div>
-    <div class="form-group">
       <label for="name">Nombre:</label>
       <input
         type="text"
@@ -41,12 +30,37 @@
         role="status"
         aria-hidden="true"
       ></span>
-      <span *ngIf="!showSpinner">Enviar Enlace Mágico</span>
+      <span *ngIf="!showSpinner">Enviar SMS</span>
     </button>
+    <re-captcha
+      (resolved)="resolved($event)"
+      siteKey="6Le-054oAAAAAP0WFdTOtsNRHvcxYsKKnKom19CE"
+    ></re-captcha>
   </div>
-  <div class="mt-4">
-    <h1 *ngIf="loggedIn" class="text-success">
-      Correo enviado, revisa tu bandeja de entrada
-    </h1>
+  <div *ngIf="loggedIn" class="mt-4">
+    <h1 class="text-success">SMS enviado, introduce el código</h1>
+    <div class="form-group">
+      <label for="pin">Pin:</label>
+      <input
+        type="text"
+        id="pin"
+        [(ngModel)]="pin"
+        class="form-control"
+        placeholder="Tu pin"
+        required
+      />
+      <small class="text-danger" *ngIf="pinErrorMessage">{{
+        pinErrorMessage
+      }}</small>
+    </div>
+    <button class="btn btn-primary" (click)="verifyNumber()">
+      <span
+        *ngIf="verificationSpinner"
+        class="spinner-border spinner-border-sm"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      <span *ngIf="!verificationSpinner">Verificar Pin</span>
+    </button>
   </div>
 </div>

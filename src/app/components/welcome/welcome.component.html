@@ -1,15 +1,28 @@
 <div class="container container-main mt-5">
   <div class="d-flex flex-column align-items-center">
-    <h1 class="mb-3">Hola {{ name }}, este es el resultado de tu test</h1>
-
+    <h1 class="mb-3">Hola {{ name }}, ya tenemos tus resultados.</h1>
+    <canvas #resultCanvas>
+      <h1>Aqui eran los resultados dependiendo de las respuestas</h1>
+    </canvas>
     <h2 class="mb-4">
       Dale a descargar y te llegará tu resultado con más detalle en el correo.
     </h2>
 
+    <div class="form-group mb-3">
+      <label for="userEmail">Correo Electrónico:</label>
+      <input
+        type="email"
+        id="userEmail"
+        [(ngModel)]="email"
+        class="form-control"
+        placeholder="Introduce tu correo electrónico"
+        required
+      />
+    </div>
     <button
       class="btn btn-primary mb-4"
       (click)="descargar()"
-      [disabled]="isDownloading"
+      [disabled]="isDownloading || !email"
     >
       <span
         *ngIf="isDownloading"
@@ -33,7 +46,7 @@
 
   <button class="btn btn-primary mx-2">
     <a
-      href="https://twitter.com/share?url=https://lpprojectpro.vercel.app/"
+      href="https://twitter.com/share?url=https://lpprojectpro.vercel.app/results"
       target="_blank"
       class="text-white text-decoration-none"
     >
@@ -44,7 +57,7 @@
   <button class="btn btn-primary mx-2">
     <a
       target="_blank"
-      href="https://www.facebook.com/sharer/sharer.php?u=https://lpprojectpro.vercel.app/&amp;src=sdkpreparse"
+      href="https://www.facebook.com/sharer/sharer.php?u=https://lpprojectpro.vercel.app/results&amp;src=sdkpreparse"
       class="text-white text-decoration-none"
     >
       Facebook
@@ -53,7 +66,7 @@
 
   <button class="btn btn-success mx-2">
     <a
-      href="https://api.whatsapp.com/send?text=Título_de_tu_contenido%20https://lpprojectpro.vercel.app/"
+      href="https://api.whatsapp.com/send?text=Calculadora financiera%20https://lpprojectpro.vercel.app/results"
       target="_blank"
       class="text-white text-decoration-none"
     >

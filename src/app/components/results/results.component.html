@@ -1,0 +1,9 @@
+<div class="results-container">
+  <h1>Tus Resultados</h1>
+  <ul class="results-list">
+    <li *ngFor="let response of responsesTest">
+      <div class="question">{{ response.question }}</div>
+      <div class="answer">{{ response.answer }}</div>
+    </li>
+  </ul>
+</div>

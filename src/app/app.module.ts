@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { BrowserModule } from '@angular/platform-browser';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { QuizService } from './services/quiz.service';
 import { HttpClientModule } from '@angular/common/http';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { ResultsComponent } from './components/results/results.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     MainComponent,
     QuizComponent,
     LoginComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    ResultsComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +32,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    RecaptchaModule
   ],
   providers: [QuizService],
   bootstrap: [AppComponent]

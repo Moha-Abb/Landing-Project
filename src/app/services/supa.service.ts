@@ -26,6 +26,23 @@ export class SupaService {
       return { error };
     }
   }
+  async signInWithPhone(phone: string): Promise<any> {
+    const { data, error } = await this.supabase.auth.signInWithOtp({
+      phone: phone,
+    })
+    return { data, error };
+
+  }
+
+  async verifyPhoneNumber(phone: string, pin: string): Promise<any> {
+    const { data, error } = await this.supabase.auth.verifyOtp({
+      phone: phone,
+      token: pin,
+      type: 'sms'
+    })
+    return { data, error };
+
+  }
 
   async saveUserResponses(userId: string, responses: any): Promise<any> {
     const userID = userId.replace(/['"]/g, '');
@@ -87,8 +104,8 @@ export class SupaService {
     return data?.[0]?.numerointento || 0;
   }
 
-  async updateUserInfo(userId: string, name: string, phone: string): Promise<any> {
-    const { data: user, error } = await this.supabase.auth.updateUser({ data: { phone: phone, name: name } });
+  async updateUserInfo(name: string): Promise<any> {
+    const { data: user, error } = await this.supabase.auth.updateUser({ data: { name: name } });
 
     if (error) {
       console.error('Error al actualizar la información del usuario:', error);
@@ -96,7 +113,24 @@ export class SupaService {
 
     return { user, error };
   }
+  async updateUserInfoEmail(email: string): Promise<any> {
+    const { data: user, error } = await this.supabase.auth.updateUser({ data: { email: email } });
 
+    if (error) {
+      console.error('Error al actualizar la información del usuario:', error);
+    }
+
+    return { user, error };
+  }
+  async updateUserInfoImage(image: object): Promise<any> {
+    const { data: user, error } = await this.supabase.auth.updateUser({ data: { image: image } });
+
+    if (error) {
+      console.error('Error al actualizar la información del usuario:', error);
+    }
+
+    return { user, error };
+  }
   async signOut() {
     try {
       const { error } = await this.supabase.auth.signOut();
@@ -108,5 +142,27 @@ export class SupaService {
 
   async getCurrentUser(): Promise<any> {
     return await this.supabase.auth.getUser();
+  }
+
+  async saveImageToStorage(userId: string, blob: Blob): Promise<string> {
+    const file = new File([blob], `${userId}.png`, { type: 'image/png' });
+
+    const { data, error } = await this.supabase.storage.from('resultsfoto').upload(`results/${userId}2.png`, file);
+    console.log(data)
+    console.log(error)
+
+    if (error) {
+      throw error;
+    }
+    return data.path
+
+  }
+  async getImageToStorageUrl(userId: string): Promise<string> {
+    const { data } = await this.supabase
+      .storage
+      .from('resultsfoto')
+      .getPublicUrl(`results/${userId}.png`)
+
+    return data.publicUrl;
   }
 }

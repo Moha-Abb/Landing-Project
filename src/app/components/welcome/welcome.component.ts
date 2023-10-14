@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ViewChild, ElementRef } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
+
 import { SupaService } from '../../services/supa.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -14,13 +17,16 @@ export class WelcomeComponent implements OnInit {
   name: any;
   phone: any;
   result: any;
+  dataUser: any
   responsesTest: any
   isDownloading: boolean = false;
 
   private respuestasGuardadas: boolean = false;
+  @ViewChild('resultCanvas', { static: false }) resultCanvas: ElementRef | undefined;
+  imageGeneratedUrl!: string;
 
   constructor(private supaService: SupaService, private route: Router,
-    private http: HttpClient) {
+    private http: HttpClient, private meta: Meta) {
 
   }
 
@@ -50,17 +56,23 @@ export class WelcomeComponent implements OnInit {
 
   async checkAuthentication() {
     try {
-      const dataUser = await this.supaService.getCurrentUser();
-      this.email = dataUser.data.user.email;
-      if (dataUser.data.user?.aud == "authenticated") {
-        if (!dataUser.data.user.user_metadata || Object.keys(dataUser.data.user.user_metadata).length === 0) {
-          await this.supaService.updateUserInfo(dataUser.data.user.id, this.name, this.phone);
+      this.dataUser = await this.supaService.getCurrentUser();
+      this.email = this.dataUser.data.user.email;
+      if (this.dataUser.data.user?.aud == "authenticated") {
+        if (!this.dataUser.data.user.user_metadata || Object.keys(this.dataUser.data.user.user_metadata).length === 0) {
+          await this.supaService.updateUserInfo(this.name);
         }
 
-        if (this.responsesTest) {
-          await this.supaService.saveUserResponses(dataUser.data.user.id, this.responsesTest);
+        if (true) {
+          await this.supaService.saveUserResponses(this.dataUser.data.user.id, this.responsesTest);
           localStorage.removeItem('responsesTest')
           this.respuestasGuardadas = true;
+          const imageGenerated = await this.generateImage()
+          await this.supaService.saveImageToStorage(this.dataUser.data.user.id, imageGenerated)
+          this.imageGeneratedUrl = await this.supaService.getImageToStorageUrl(this.dataUser.data.user.id)
+          this.meta.updateTag({ property: 'og:image', content: this.imageGeneratedUrl });
+          this.meta.updateTag({ name: 'twitter:image', content: this.imageGeneratedUrl });
+
         }
         return { error: null };
       } else {
@@ -109,20 +121,44 @@ export class WelcomeComponent implements OnInit {
     }
   }
 
-  descargar() {
+  async descargar() {
     this.isDownloading = true;
     const destinatario = this.email;
-    this.http.post('http://localhost:3000/enviar-correo', { destinatario, respuestas: this.responsesTest }).subscribe(
-      () => {
-        console.log('Correo enviado con éxito');
-        this.isDownloading = false;
-      },
-      (Error) => {
-        console.error('Error al enviar el correo: (verifica tu cuenta de mailtrap)', Error);
-        this.isDownloading = false;
+    if (!this.dataUser.data.user.email) {
+      await this.supaService.updateUserInfoEmail(this.email);
+    }
+    // Cambia la URL a la URL de tu función serverless en Supabase
+    this.http.post('/api/sendMail', { destinatario, respuestas: this.responsesTest })
+      .subscribe(
+        () => {
+          console.log('Correo enviado con éxito');
+          this.isDownloading = false;
+        },
+        (Error) => {
+          console.error('Error al enviar el correo:', Error);
+          this.isDownloading = false;
+        }
+      );
+  }
 
-      }
-    );
+  async generateImage(): Promise<Blob> {
+    // Deberías tener una referencia del elemento canvas en tu plantilla HTML
+    // Asume que tienes <canvas #resultCanvas></canvas> en welcome.component.html
+    const canvas = this.resultCanvas?.nativeElement;
+    const ctx = canvas.getContext('2d');
+
+    // Personaliza tu imagen:
+    ctx.fillText(`Resultado: ${this.responsesTest}`, 50, 50);
+
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob: Blob | PromiseLike<Blob>) => {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error("Error generating image"));
+        }
+      });
+    });
   }
 }
 
