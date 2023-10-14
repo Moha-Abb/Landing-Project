@@ -69,7 +69,6 @@ export class LoginComponent implements OnInit {
       console.error('Error al verificar el pin:', error);
       this.pinErrorMessage = 'El pin introducido es erróneo.';
     } else {
-      await this.supaService.updateUserInfo(this.name);
 
       console.log('Pin verificado exitosamente:', data);
       this.router.navigate(['https://lpprojectpro.vercel.app/welcome']);
