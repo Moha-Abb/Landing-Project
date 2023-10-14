@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
     } else {
 
       console.log('Pin verificado exitosamente:', data);
-      this.router.navigate(['https://lpprojectpro.vercel.app/welcome']);
+      this.router.navigate(['/welcome']);
     }
 
     this.verificationSpinner = false;

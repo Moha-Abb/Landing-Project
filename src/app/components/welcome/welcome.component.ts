@@ -128,7 +128,7 @@ export class WelcomeComponent implements OnInit {
       await this.supaService.updateUserInfoEmail(this.email);
     }
     // Cambia la URL a la URL de tu función serverless en Supabase
-    this.http.post('/api/sendMail', { destinatario, respuestas: this.responsesTest })
+    this.http.post('/api/sendmail', { destinatario, respuestas: this.responsesTest })
       .subscribe(
         () => {
           console.log('Correo enviado con éxito');
