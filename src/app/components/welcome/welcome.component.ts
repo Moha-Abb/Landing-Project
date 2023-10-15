@@ -66,11 +66,11 @@ export class WelcomeComponent implements OnInit {
     try {
       this.dataUser = await this.supaService.getCurrentUser();
       this.email = this.dataUser.data.user.email;
-      this.name = this.dataUser.data.user.name;
       if (this.dataUser.data.user?.aud == "authenticated") {
         if (!this.dataUser.data.user.user_metadata || Object.keys(this.dataUser.data.user.user_metadata).length === 0) {
           await this.supaService.updateUserInfoName(this.name);
         }
+        this.name = this.dataUser.data.user.user_metadata.name;
 
         if (this.responsesTest) {
           await this.supaService.saveUserResponses(this.dataUser.data.user.id, this.responsesTest);
